@@ -334,6 +334,10 @@ body {
             align-items: center;
             border-radius: 5px;
             cursor: pointer;
+            img{
+              width: 51px;
+              height:51px;
+            }
           }
           &--boxSelected {
             width: 44px;
@@ -345,6 +349,10 @@ body {
             align-items: center;
             border-radius: 5px;
             cursor:default;
+            img{
+              width: 51px;
+              height:51px;
+            }
           }
           &--box1{
             width: 44px;

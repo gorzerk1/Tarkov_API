@@ -264,31 +264,31 @@ const rewardData = displayItems.map((item, index) => (
               <img src="../../all_levels_white.png" alt="All" />
             </div>
             <div className={`Main__Settings__Traders__Level--Category--${selectedItem === 'Gear' ? 'boxSelected' : 'box'}`} onClick={() => handleItemClick('Gear')}>
-              <img src="../../bulletproof-vest_43px.png" alt="Gear" />
+              <img src="../../bulletproof-vest_white.png" alt="Gear" />
             </div>
             <div className={`Main__Settings__Traders__Level--Category--${selectedItem === 'Weapons' ? 'boxSelected' : 'box'}`} onClick={() => handleItemClick('Weapons')}>
-              <img src="../../weapon_28px.png" alt="weapon" />
+              <img src="../../weapon_white.png" alt="weapon" />
             </div>
             <div className={`Main__Settings__Traders__Level--Category--${selectedItem === 'Magazine' ? 'boxSelected' : 'box'}`} onClick={() => handleItemClick('Magazine')}>
-              <img src="../../magazine_35px.png" alt="Magazine" />
+              <img src="../../magazine_white.png" alt="Magazine" />
             </div>
             <div className={`Main__Settings__Traders__Level--Category--${selectedItem === 'Ammunation' ? 'boxSelected' : 'box'}`} onClick={() => handleItemClick('Ammunation')}>
-              <img src="../../ammunition_30px.png" alt="Ammunation" />
+              <img src="../../ammunition_white.png" alt="Ammunation" />
             </div>
             <div className={`Main__Settings__Traders__Level--Category--${selectedItem === 'Medical' ? 'boxSelected' : 'box'}`} onClick={() => handleItemClick('Medical')}>
-              <img src="../../medical_36px.png" alt="Medical" />
+              <img src="../../medical_white.png" alt="Medical" />
             </div>
             <div className={`Main__Settings__Traders__Level--Category--${selectedItem === 'Consumable' ? 'boxSelected' : 'box'}`} onClick={() => handleItemClick('Consumable')}>
-              <img src="../../consumable_37px.png" alt="Consumable" />
+              <img src="../../consumable_white.png" alt="Consumable" />
             </div>
             <div className={`Main__Settings__Traders__Level--Category--${selectedItem === 'Weapon parts & mods' ? 'boxSelected' : 'box'}`} onClick={() => handleItemClick('Weapon parts & mods')}>
-              <img src="../../weapon_part_39px.png" alt="Weapon parts & mods" />
+              <img src="../../weapon_part_white.png" alt="Weapon parts & mods" />
             </div>
             <div className={`Main__Settings__Traders__Level--Category--${selectedItem === 'Keys' ? 'boxSelected' : 'box'}`} onClick={() => handleItemClick('Keys')}>
-              <img src="../../key_37px.png" alt="Keys" />
+              <img src="../../key_white.png" alt="Keys" />
             </div>
             <div className={`Main__Settings__Traders__Level--Category--${selectedItem === 'Other' ? 'boxSelected' : 'box'}`} onClick={() => handleItemClick('Other')}>
-              <img src="../../other.png" alt="Other" />
+              <img src="../../other_white.png" alt="Other" />
             </div>
           </div>
           </div>
