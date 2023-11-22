@@ -1,0 +1,10 @@
+body {
+  background-color: black;
+  scroll-behavior:smooth
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-behavior: auto;
+  scroll-behavior: smooth;
+}
