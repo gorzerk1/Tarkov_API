@@ -1,29 +1,10 @@
-import React,{useState, useEffect} from 'react';
+import React,{useState, useEffect, useContext} from 'react';
 import { request, gql } from 'graphql-request'
+import { MyContext } from '../../data/ThemeProvider'
 import './main.scss';
 
 function Main() {
-  const [filteredCategories, setFilteredCategories] = useState({});
-  const [categorizedItems, setCategorizedItems] = useState({});
-  const [displayItems, setDisplayItems] = useState([]);
-  const [selectedItem, setSelectedItem] = useState('All');
-  const [selectedLevel, setSelectedLevel] = useState('AllLvl');
-  const [selectedTrader, setSelectedTrader] = useState('All');
-  const [searchText, setSearchText] = useState('');
-  console.log(categorizedItems)
-
-  const handleItemClick = (item) => {
-    setSelectedItem(item);
-  };
-  const handleLevelClick = (item) => {
-    setSelectedLevel(item);
-  };
-  const handleTraderClick = (item) => {
-    setSelectedTrader(item);
-  };
-  const handleSearchChange = (e) => {
-    setSearchText(e.target.value.toLowerCase());
-  };
+  const { setCategorizedItems, imageColor,displayItems} = useContext(MyContext);
 
   useEffect(() => {
     const categoryMap = {
@@ -149,51 +130,16 @@ function Main() {
     .catch((error) => {
       console.error("Error fetching data: ", error);
     });
-  }, []);
+  }, [setCategorizedItems]);
 
-  useEffect(() => {
-    let filtered = {};
-
-    Object.keys(categorizedItems).forEach(category => {
-      filtered[category] = categorizedItems[category].filter(item => {
-        const matchesTrader = selectedTrader === 'All' || item.trader.name === selectedTrader;
-        const matchesLevel = selectedLevel === 'AllLvl' || item.requiredLevel.toString() === selectedLevel;
-        return matchesTrader && matchesLevel;
-      });
-    });
-
-    setFilteredCategories(filtered);
-  }, [selectedTrader, selectedLevel, categorizedItems]);
-
-  useEffect(() => {
-    let searchFiltered = {};
-
-    Object.keys(filteredCategories).forEach(category => {
-      searchFiltered[category] = filteredCategories[category].filter(item => 
-          item.name.toLowerCase().includes(searchText)
-      );
-    });
-
-    if (selectedItem === 'All') {
-      // When 'All' is selected, flatten all categories into one array
-      const combinedItems = Object.values(searchFiltered).flat();
-      setDisplayItems(combinedItems);
-    } else {
-      // For specific categories
-      const categoryItems = searchFiltered[selectedItem] || [];
-      setDisplayItems(categoryItems);
-    }
-  }, [selectedItem, filteredCategories, searchText]);
-
-  
   
 const RewardCard = ({ item }) => {
   const [isHovered, setIsHovered] = useState(false);
   const levelImageMap = {
-    '1': 'Greak1',
-    '2': 'Greak2',
-    '3': 'Greak3',
-    '4': 'Greak4',
+    '1': "Greak1_" + imageColor,
+    '2': 'Greak2_' + imageColor,
+    '3': 'Greak3_' + imageColor,
+    '4': 'Greak4_' + imageColor,
   };
   const levelImage = levelImageMap[item.requiredLevel.toString()] || 'default';
   const copyToClipboard = (text) => {
@@ -229,90 +175,12 @@ const RewardCard = ({ item }) => {
   );
 };
 
-// Map over displayItems to create individual Reward Cards
 const rewardData = displayItems.map((item, index) => (
   <RewardCard item={item} key={index} />
 )) || [];
 
-
   return (
     <div className="Main">
-      <div className='Main__Settings'>
-        <div className='Main__Settings__Traders'>
-          <div className='Main__Settings__Traders__Text'>
-            <div className='Main__Settings__Traders__Text--LvlText'>Trader level:</div>
-            <div className='Main__Settings__Traders__Text--LvlText1'>Category:</div>
-          </div>
-          <div className='Main__Settings__Traders__Level'>
-            <div className={`Main__Settings__Traders__Level--${selectedLevel === 'AllLvl' ? 'boxSelected1' : 'box1'}`} onClick={() => handleLevelClick('AllLvl')}>
-              <img src="../../all_levels_white.png" alt="" />
-            </div>
-            <div className={`Main__Settings__Traders__Level--${selectedLevel === '1' ? 'boxSelected' : 'box'}`} onClick={() => handleLevelClick('1')}>
-              <img src="../../Greak1_white.png" alt="" />
-            </div>
-            <div className={`Main__Settings__Traders__Level--${selectedLevel === '2' ? 'boxSelected' : 'box'}`} onClick={() => handleLevelClick('2')}>
-              <img src="../../Greak2_white.png" alt="" />
-            </div>
-            <div className={`Main__Settings__Traders__Level--${selectedLevel === '3' ? 'boxSelected' : 'box'}`} onClick={() => handleLevelClick('3')}>
-              <img src="../../Greak3_white.png" alt="" />
-            </div>
-            <div className={`Main__Settings__Traders__Level--${selectedLevel === '4' ? 'boxSelected' : 'box'}`} onClick={() => handleLevelClick('4')}>
-              <img src="../../Greak4_white.png" alt="" />
-            </div>
-            <div className='Main__Settings__Traders__Level--Category'>
-            <div className={`Main__Settings__Traders__Level--Category--${selectedItem === 'All' ? 'boxSelected1' : 'box1'}`} onClick={() => handleItemClick('All')}>
-              <img src="../../all_levels_white.png" alt="All" />
-            </div>
-            <div className={`Main__Settings__Traders__Level--Category--${selectedItem === 'Gear' ? 'boxSelected' : 'box'}`} onClick={() => handleItemClick('Gear')}>
-              <img src="../../bulletproof-vest_white.png" alt="Gear" />
-            </div>
-            <div className={`Main__Settings__Traders__Level--Category--${selectedItem === 'Weapons' ? 'boxSelected' : 'box'}`} onClick={() => handleItemClick('Weapons')}>
-              <img src="../../weapon_white.png" alt="weapon" />
-            </div>
-            <div className={`Main__Settings__Traders__Level--Category--${selectedItem === 'Magazine' ? 'boxSelected' : 'box'}`} onClick={() => handleItemClick('Magazine')}>
-              <img src="../../magazine_white.png" alt="Magazine" />
-            </div>
-            <div className={`Main__Settings__Traders__Level--Category--${selectedItem === 'Ammunation' ? 'boxSelected' : 'box'}`} onClick={() => handleItemClick('Ammunation')}>
-              <img src="../../ammunition_white.png" alt="Ammunation" />
-            </div>
-            <div className={`Main__Settings__Traders__Level--Category--${selectedItem === 'Medical' ? 'boxSelected' : 'box'}`} onClick={() => handleItemClick('Medical')}>
-              <img src="../../medical_white.png" alt="Medical" />
-            </div>
-            <div className={`Main__Settings__Traders__Level--Category--${selectedItem === 'Consumable' ? 'boxSelected' : 'box'}`} onClick={() => handleItemClick('Consumable')}>
-              <img src="../../consumable_white.png" alt="Consumable" />
-            </div>
-            <div className={`Main__Settings__Traders__Level--Category--${selectedItem === 'Weapon parts & mods' ? 'boxSelected' : 'box'}`} onClick={() => handleItemClick('Weapon parts & mods')}>
-              <img src="../../weapon_part_white.png" alt="Weapon parts & mods" />
-            </div>
-            <div className={`Main__Settings__Traders__Level--Category--${selectedItem === 'Keys' ? 'boxSelected' : 'box'}`} onClick={() => handleItemClick('Keys')}>
-              <img src="../../key_white.png" alt="Keys" />
-            </div>
-            <div className={`Main__Settings__Traders__Level--Category--${selectedItem === 'Other' ? 'boxSelected' : 'box'}`} onClick={() => handleItemClick('Other')}>
-              <img src="../../other_white.png" alt="Other" />
-            </div>
-          </div>
-          </div>
-
-          <div className='Main__Settings__Traders--TraderText'>Trader:</div>
-          <div className='Main__Settings__Traders__Trader'>
-            <div className={`Main__Settings__Traders__Trader--${selectedTrader === 'Prapor' ? 'boxSelected' : 'box'}`} onClick={() => handleTraderClick('Prapor')}>Prapor</div>
-            <div className={`Main__Settings__Traders__Trader--${selectedTrader === 'Therapist' ? 'boxSelected' : 'box'}`} onClick={() => handleTraderClick('Therapist')}>Therapist</div>
-            <div className={`Main__Settings__Traders__Trader--${selectedTrader === 'Skier' ? 'boxSelected' : 'box'}`} onClick={() => handleTraderClick('Skier')}>Skier</div>
-            <div className={`Main__Settings__Traders__Trader--${selectedTrader === 'Peacekeeper' ? 'boxSelected' : 'box'}`} onClick={() => handleTraderClick('Peacekeeper')}>Peacekeeper</div>
-            <div className={`Main__Settings__Traders__Trader--${selectedTrader === 'Mechanic' ? 'boxSelected' : 'box'}`} onClick={() => handleTraderClick('Mechanic')}>Mechanic</div>
-            <div className={`Main__Settings__Traders__Trader--${selectedTrader === 'Ragman' ? 'boxSelected' : 'box'}`} onClick={() => handleTraderClick('Ragman')}>Ragman</div>
-            <div className={`Main__Settings__Traders__Trader--${selectedTrader === 'Jaeger' ? 'boxSelected' : 'box'}`} onClick={() => handleTraderClick('Jaeger')}>Jaeger</div>
-            <div className={`Main__Settings__Traders__Trader--${selectedTrader === 'All' ? 'boxSelected' : 'box'}`} onClick={() => handleTraderClick('All')}>All</div>
-            <div className='Main__Settings__Traders__Trader__SearchBar'>
-            <input
-            type="text"
-            onChange={handleSearchChange}
-            placeholder='Search for an item.'
-          />
-            </div>
-          </div>
-        </div>
-      </div>
       <div className='Main__Container'>
       <div className='Main__Container__Cards'>
         {rewardData}
